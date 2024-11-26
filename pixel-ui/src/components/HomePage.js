@@ -9,8 +9,8 @@ const HomePage = () => {
     <div className="scene">
       <div className="buttons">
         <div className="button" onClick={() => navigate('/uv-index')}>UV Index</div>
-        <div className="button">Temperature</div>
-        <div className="button">Heart Rate</div>
+        <div className="button" onClick={() => navigate('/Temp-index')}>Temperature</div>
+        <div className="button" onClick={() => navigate('/HeartRate-index')}>Heart Rate</div>
       </div>
     </div>
   );
