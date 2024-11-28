@@ -1,32 +1,83 @@
+/* 主容器样式 */
 .scene {
-    width: 100vw;
-    height: 100vh;
-    background: url('../images/background.jpeg') no-repeat center center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Tiny5', monospace;
+  width: 100vw;
+  height: 100vh;
+  background: url('../images/background.jpeg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column; /* 垂直布局 */
+  align-items: center;    /* 水平居中 */
+  justify-content: center; /* 垂直居中 */
+  font-family: 'Tiny5', monospace;
+  gap: 20px; /* 增加元素间的间距 */
+}
+
+/* UV Index 信息 */
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* 按钮容器 */
+.buttons {
+  display: flex;
+  flex-wrap: wrap; /* 按钮自动换行 */
+  gap: 15px;       /* 按钮间的间距 */
+  justify-content: center; /* 水平居中 */
+}
+
+/* 通用按钮样式 */
+.button {
+  padding: 10px 20px;
+  background-color: white;
+  border: 3px solid black;
+  box-shadow: 4px 4px 0px black;
+  font-size: 16px;
+  font-family: 'Tiny5', monospace;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  box-shadow: 2px 2px 0px black;
+  transform: translate(2px, 2px);
+}
+
+/* UV Index 按钮：危险状态样式 */
+.button.danger {
+  background-color: red;
+  color: white;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    background-color: red;
   }
-  
-  .buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .button {
-    padding: 10px 20px;
+  50% {
     background-color: white;
-    border: 3px solid black;
-    box-shadow: 4px 4px 0px black;
-    font-size: 16px;
-    font-family: 'Tiny5', monospace;
-    text-transform: uppercase;
-    cursor: pointer;
   }
-  
-  .button:hover {
-    box-shadow: 2px 2px 0px black;
-    transform: translate(2px, 2px);
-  }
-  
+}
+
+/* 控制 UV Index 的按钮样式 */
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px; /* 按钮间距 */
+}
+
+.controls button {
+  padding: 10px 15px;
+  border: 2px solid black;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: 'Tiny5', monospace;
+  transition: all 0.2s ease;
+}
+
+.controls button:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
