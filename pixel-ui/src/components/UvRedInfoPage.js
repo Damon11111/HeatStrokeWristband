@@ -8,12 +8,14 @@ const UvRedInfoPage = () => {
   return (
     <div className="info-detail-page">
       <h1>Blue and Red LED Light</h1>
-      <p>UV Rating 8+</p>
-      <p>
-        The blue and red LED lights indicate a high to extreme UV rating. Head 
-        inside and stay cool! Please remain out of the sun if possible. Remember 
-        to stay well hydrated!
-      </p>
+      <div className='box'>
+        <p>UV Rating 8+</p>
+        <p>
+            The blue and red LED lights indicate a high to extreme UV rating. Head 
+            inside and stay cool! Please remain out of the sun if possible. Remember 
+            to stay well hydrated!
+        </p>
+      </div>
       <button className="back-button" onClick={() => navigate('/info')}>
         Back to Info Page
       </button>

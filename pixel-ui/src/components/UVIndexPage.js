@@ -20,7 +20,7 @@ const UVIndexPage = () => {
           <h3 className={isDanger ? 'danger-range' : 'safe-range'}>
           {isDanger ? 'DANGER' : 'SAFE'}</h3>
           <p>range</p>
-          <button className="info-button" onClick={() => navigate('/info')}>
+          <button className="Uv-info-button" onClick={() => navigate('/info')}>
             !
           </button>
         </div>

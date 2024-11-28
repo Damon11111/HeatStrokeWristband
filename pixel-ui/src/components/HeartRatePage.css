@@ -1,60 +1,101 @@
-.HeartRate-index-page {
-    width: 100vw;
-    height: 100vh;
-    background: url('../images/background.jpeg') no-repeat center center;
-    background-size: cover;
-    text-align: center;
-    color: black;
-    font-family: 'Tiny5', monospace;
-  }
-  
-  h1 {
-    margin-top: 20px;
-    font-size: 36px;
-    font-family: 'Tiny5', monospace;
-  }
-  
-  .content {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-  }
-  
-  .left-panel, .right-panel {
-    width: 300px;
-    height: 300px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border: 3px solid black;
-    margin: 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 4px 4px 0px black;
-  }
-  
-  .safe-range {
-    color: green;
-    font-size: 24px;
-    font-weight: bold;
-  }
+.heart-rate-page {
+  width: 100vw;
+  height: 100vh;
+  background: url('../images/background.jpeg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  font-family: 'Courier New', monospace;
+}
 
-  .back-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-family: 'Tiny5', monospace;
-    border: 2px solid black;
-    background-color: white;
-    cursor: pointer;
-    text-transform: uppercase;
-    box-shadow: 3px 3px 0px black;
-    transition: all 0.2s ease;
-  }
-  
-  .back-button:hover {
-    box-shadow: 1px 1px 0px black;
-    transform: translate(2px, 2px);
-  }
-  
-  
+h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 确保垂直方向内容对齐 */
+  gap: 40px; /* 左右面板间隔 */
+  margin-top: 20px;
+}
+
+.left-panel {
+  width: 350px; /* 增大宽度以避免字体过近 */
+  height: 350px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 3px solid black;
+  box-shadow: 4px 4px 0px black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center; /* 确保文字居中 */
+}
+
+input {
+  width: 90%; /* 增大输入框宽度 */
+  padding: 8px;
+  margin: 10px 0;
+  border: 1px solid black;
+  border-radius: 5px; /* 增加圆角效果 */
+  text-align: center;
+  font-size: 16px;
+}
+
+.safe, .caution, .danger {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.safe {
+  color: green;
+}
+
+.caution {
+  color: orange;
+}
+
+.danger {
+  color: red;
+}
+
+.right-panel {
+  width: 350px; /* 增大宽度以适配图表 */
+  height: 350px; /* 增大高度以适配图表 */
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 3px solid black;
+  box-shadow: 4px 4px 0px black;
+  padding: 20px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between; /* 让标题和图标分开 */
+  align-items: center;
+  margin-bottom: 20px; /* 加大与图表的间距 */
+}
+
+.chart-header h2 {
+  font-size: 24px; /* 调整标题字体大小 */
+}
+
+svg {
+  width: 100%;
+  height: 250px; /* 增加图表高度 */
+}
+
+.back-button {
+  margin-top: 30px; /* 增加与上方内容的距离 */
+  padding: 10px 20px;
+  font-size: 18px;
+  border: 2px solid black;
+  background-color: white;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 black;
+}

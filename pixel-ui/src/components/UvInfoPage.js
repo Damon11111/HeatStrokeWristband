@@ -7,7 +7,9 @@ const UvInfoPage = () => {
 
   return (
     <div className="info-page">
+      
       <h1>LED UV Ratings</h1>
+      <div className="box">
       <p>
         Each LED light on your wristband indicates the current UV light rating in your location. 
         The following is the key to reading these lights!
@@ -34,6 +36,7 @@ const UvInfoPage = () => {
         >
           BLUE <br /> RED
         </button>
+      </div>
       </div>
       <button className="back-button" onClick={() => navigate('/uv-index')}>
         Back to Info Page

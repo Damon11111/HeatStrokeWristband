@@ -8,6 +8,10 @@ import UvInfoPage from './components/UvInfoPage';
 import UvWhiteInfoPage from './components/UvWhiteInfoPage';
 import UvYellowInfoPage from './components/UvYellowInfoPage';
 import UvRedInfoPage from './components/UvRedInfoPage';
+import TemperatureInfo from './components/TempInfoPage';
+import SafeTemperature from './components/SafeTemperature';
+import CautionTemperature from './components/CautionTemperature';
+import DangerTemperature from './components/DangerTemperature';
 
 const App = () => {
   return (
@@ -21,6 +25,10 @@ const App = () => {
         <Route path="/white-info" element={<UvWhiteInfoPage />} />
         <Route path="/yellow-info" element={<UvYellowInfoPage />} />
         <Route path="/red-info" element={<UvRedInfoPage />} />
+        <Route path="/temp-info" element={<TemperatureInfo />} />
+        <Route path="/temp-info/safe" element={<SafeTemperature />} />
+        <Route path="/temp-info/caution" element={<CautionTemperature />} />
+        <Route path="/temp-info/danger" element={<DangerTemperature />} />
       </Routes>
     </Router>
   );
