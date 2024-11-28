@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path'); // For handling static files
 require('dotenv').config();
 
 const app = express();
@@ -8,12 +9,10 @@ const PORT = 8080;
 
 // Allow specific origins (replace with your frontend URL)
 app.use(cors({
-    origin: 'http://localhost:3000', // Frontend origin
-    methods: ['GET'], // Allow only GET requests
-    credentials: true, // Include credentials if necessary
-  }));
-// Enable CORS for frontend access
-app.use(cors());
+  origin: 'http://localhost:3000', // Replace with your frontend URL
+  methods: ['GET'], // Allow only GET requests
+  credentials: true, // Include credentials if necessary
+}));
 
 // Route to get weather data
 app.get('/api/weather', async (req, res) => {
@@ -36,6 +35,19 @@ app.get('/api/weather', async (req, res) => {
     console.error('Error fetching weather data:', error.message);
     res.status(500).send({ error: 'Failed to fetch weather data' });
   }
+});
+
+// Serve static files from React app's build directory
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Handle root route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Heat Stroke Wristband API');
+});
+
+// Handle all other routes and serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Start the server
