@@ -30,8 +30,8 @@ h1 {
 }
 
 /* 左右面板样式 */
-.left-panel,
-.right-panel {
+.left-panel
+ {
   width: 300px;
   height: 300px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -42,6 +42,8 @@ h1 {
   align-items: center;
   justify-content: center;
 }
+
+
 
 /* 状态文本样式 */
 .safe-range {

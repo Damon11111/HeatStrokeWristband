@@ -1,17 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [uvIndex, setUvIndex] = useState(5); // 默认 UV Index
+  const [uvIndex, setUvIndex] = useState(null); // UV Index
+  const [temperature, setTemperature] = useState(null); // Temperature
+  const [weatherIcon, setWeatherIcon] = useState(null); // Weather Icon
+  const [location, setLocation] = useState({ lat: null, lon: null }); // Latitude and Longitude
+
+  // Get user's location
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          alert("Unable to retrieve location. Please check your browser settings!");
+        }
+      );
+    } else {
+      alert("Your browser does not support geolocation!");
+    }
+  }, []);
+
+  // Fetch weather and UV data from the backend
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      if (location.lat && location.lon) {
+        try {
+          const response = await axios.get('http://localhost:8080/api/weather', {
+            params: {
+              lat: location.lat,
+              lon: location.lon,
+            },
+          });
+
+          // Update temperature, weather icon, and UV data
+          setTemperature(response.data.temperature);
+          setWeatherIcon(response.data.weatherIcon);
+          setUvIndex(response.data.uvIndex);
+        } catch (error) {
+          console.error("Error fetching weather data:", error);
+        }
+      }
+    };
+
+    fetchWeatherData();
+  }, [location]);
 
   return (
     <div className="scene">
-      {/* UV Index 信息 */}
-      <h1>Current UV Index: {uvIndex}</h1>
-      
-      {/* 按钮区 */}
+      {/* Display weather and UV information */}
+      <h1>Weather Information</h1>
+      {temperature !== null && <p>Current Temperature: {temperature}°F</p>}
+      {uvIndex !== null && <p>UV Index: {uvIndex}</p>}
+
+      {/* Buttons */}
       <div className="buttons">
         <div
           className={`button ${uvIndex > 8 ? 'danger' : ''}`}
@@ -19,14 +70,17 @@ const HomePage = () => {
         >
           UV Index
         </div>
-        <div className="button" onClick={() => navigate('/Temp-index')}>Temperature</div>
-        <div className="button" onClick={() => navigate('/HeartRate-index')}>Heart Rate</div>
-      </div>
-
-      {/* UV Index 控制区 */}
-      <div className="controls">
-        <button onClick={() => setUvIndex(5)}>Set UV Index to 5</button>
-        <button onClick={() => setUvIndex(10)}>Set UV Index to 10</button>
+        <div
+          className="button"
+          onClick={() =>
+            navigate('/Temp-index', { state: { temperature, icon: weatherIcon } })
+          }
+        >
+          Temperature
+        </div>
+        <div className="button" onClick={() => navigate('/HeartRate-index')}>
+          Heart Rate
+        </div>
       </div>
     </div>
   );

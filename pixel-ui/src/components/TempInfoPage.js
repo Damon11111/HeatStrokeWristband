@@ -4,6 +4,7 @@ import './TempInfoPage.css';
 
 const TemperatureInfo = () => {
   const navigate = useNavigate();
+  
 
   return (
     <div className="info-page">

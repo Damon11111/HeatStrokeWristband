@@ -1,88 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './TempPage.css';
 
 const TempPage = () => {
   const navigate = useNavigate();
-  const [temperatureData, setTemperatureData] = useState([
-    { time: '12:00 AM', temp: 34 },
-    { time: '12:30 AM', temp: 36 },
-    { time: '1:00 AM', temp: 38 },
-    { time: '1:30 AM', temp: 40 },
-  ]); // 初始温度数据
-  const [currentTemp, setCurrentTemp] = useState(34); // 当前温度
+  const location = useLocation();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newTemp = Math.floor(Math.random() * 25) + 30; // 随机温度范围：30-55°F
-      const newTime = new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      }); // 当前时间
-      setTemperatureData((prevData) =>
-        [...prevData.slice(-5), { time: newTime, temp: newTemp }] // 保留最近 6 个数据点
-      );
-      setCurrentTemp(newTemp);
-    }, 3000); // 每 3 秒更新一次
+  // Get temperature and icon from HomePage
+  const temperature = location.state?.temperature || 0;
+  const weatherIcon = location.state?.icon || "01d"; // Default to clear sky
 
-    return () => clearInterval(interval); // 清除定时器
-  }, []);
+  // Map OpenWeatherMap icons to emojis
+  const getWeatherEmoji = (icon) => {
+    const iconMap = {
+      "01d": "☀️", // Clear sky (day)
+      "01n": "🌙", // Clear sky (night)
+      "02d": "⛅", // Few clouds (day)
+      "02n": "☁️", // Few clouds (night)
+      "03d": "☁️", // Scattered clouds (day)
+      "03n": "☁️", // Scattered clouds (night)
+      "04d": "🌥️", // Broken clouds (day)
+      "04n": "🌥️", // Broken clouds (night)
+      "09d": "🌧️", // Shower rain (day)
+      "09n": "🌧️", // Shower rain (night)
+      "10d": "🌦️", // Rain (day)
+      "10n": "🌦️", // Rain (night)
+      "11d": "⛈️", // Thunderstorm (day)
+      "11n": "⛈️", // Thunderstorm (night)
+      "13d": "❄️", // Snow (day)
+      "13n": "❄️", // Snow (night)
+      "50d": "🌫️", // Mist (day)
+      "50n": "🌫️", // Mist (night)
+    };
 
-  // 获取动态天气图标
-  const getWeatherIcon = () => {
-    if (currentTemp < 32) return '❄️'; // 雪花
-    if (currentTemp < 50) return '☁️'; // 云
-    return '☀️'; // 太阳
+    return iconMap[icon] || "❓";
   };
 
-  const panelStyle = {
-    backgroundColor:
-      currentTemp >= 50 ? 'rgba(144, 238, 144, 0.7)' : 'rgba(255, 165, 0, 0.7)', // 根据温度动态调整背景颜色
-    border: '3px solid black',
-    boxShadow: '4px 4px 0px black',
+  // Determine weather status
+  const getWeatherStatus = () => {
+    if (temperature < 32) return "DANGER"; // Extreme cold
+    if (temperature < 50) return "CAUTION"; // Moderate cold
+    if (temperature <= 80) return "SAFE"; // Comfortable
+    return "DANGER"; // Extreme heat
   };
+
+  // Get the panel background color based on temperature
+  const getPanelStyle = () => {
+    if (temperature < 32 || temperature > 80) {
+      return {
+        backgroundColor: 'rgba(255, 69, 0, 0.7)', // DANGER (red-orange)
+        color: 'white',
+      };
+    }
+    if (temperature < 50) {
+      return {
+        backgroundColor: 'rgba(255, 165, 0, 0.7)', // CAUTION (orange)
+        color: 'black',
+      };
+    }
+    return {
+      backgroundColor: 'rgba(144, 238, 144, 0.7)', // SAFE (green)
+      color: 'black',
+    };
+  };
+
+  const weatherStatus = getWeatherStatus();
+  const panelStyle = getPanelStyle();
 
   return (
     <div className="Temp-index-page">
       <h1>TEMPERATURE</h1>
       <div className="content">
-        {/* 左侧状态 */}
+        {/* Left Panel */}
         <div className="left-panel" style={panelStyle}>
           <p>You are in the</p>
-          <h3 className={currentTemp >= 50 ? 'safe-range' : 'caution-range'}>
-            {currentTemp >= 50 ? 'SAFE' : 'CAUTION'}
+          <h3 className={`${weatherStatus.toLowerCase()}-range`}>
+            {weatherStatus}
           </h3>
           <p>range</p>
           <button className="temp-info-button" onClick={() => navigate('/temp-info')}>ℹ</button>
         </div>
 
-        {/* 中间折线图 */}
+        {/* Right Panel */}
         <div className="right-panel">
           <div className="temperature-chart">
             <h2>
-              {currentTemp}°F {getWeatherIcon()}
+              <strong>{temperature}</strong>°F {getWeatherEmoji(weatherIcon)}
             </h2>
-            <svg width="300" height="150">
-              <polyline
-                fill="none"
-                stroke="blue"
-                strokeWidth="3"
-                strokeLinecap="round"
-                points={temperatureData
-                  .map(
-                    (data, index) => `${index * 60},${150 - (data.temp - 30) * 3}`
-                  )
-                  .join(' ')}
-              />
-            </svg>
-            <div className="temperature-details">
-              {temperatureData.map((data, index) => (
-                <div key={index} className="temperature-item">
-                  <p>{data.time}</p>
-                  <p>{data.temp}°F</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
