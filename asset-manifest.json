@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/HeatStrokeWristband/static/css/main.b2ab7537.css",
-    "main.js": "/HeatStrokeWristband/static/js/main.def8d1bd.js",
+    "main.js": "/HeatStrokeWristband/static/js/main.79c419be.js",
     "static/js/453.8370090e.chunk.js": "/HeatStrokeWristband/static/js/453.8370090e.chunk.js",
     "static/media/background.jpeg": "/HeatStrokeWristband/static/media/background.c9de42b7e4d520ac92a0.jpeg",
     "index.html": "/HeatStrokeWristband/index.html",
     "main.b2ab7537.css.map": "/HeatStrokeWristband/static/css/main.b2ab7537.css.map",
-    "main.def8d1bd.js.map": "/HeatStrokeWristband/static/js/main.def8d1bd.js.map",
+    "main.79c419be.js.map": "/HeatStrokeWristband/static/js/main.79c419be.js.map",
     "453.8370090e.chunk.js.map": "/HeatStrokeWristband/static/js/453.8370090e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b2ab7537.css",
-    "static/js/main.def8d1bd.js"
+    "static/js/main.79c419be.js"
   ]
 }
