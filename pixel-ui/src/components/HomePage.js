@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './HomePage.css';
 
+const API_URL = 'https://heatstrokewristband.onrender.com/api/weather'; // 后端 API 地址
+
 const HomePage = () => {
   const navigate = useNavigate();
   const [uvIndex, setUvIndex] = useState(null); // UV Index
@@ -35,7 +37,7 @@ const HomePage = () => {
     const fetchWeatherData = async () => {
       if (location.lat && location.lon) {
         try {
-          const response = await axios.get('http://localhost:8080/api/weather', {
+          const response = await axios.get(API_URL, {
             params: {
               lat: location.lat,
               lon: location.lon,
