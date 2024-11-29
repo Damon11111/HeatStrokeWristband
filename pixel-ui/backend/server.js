@@ -1,53 +1,69 @@
 const express = require('express');
-const axios = require('axios');
+//const axios = require('axios');
 const cors = require('cors');
 const path = require('path'); // For handling static files
+const { SerialPort, ReadlineParser } = require('serialport'); // For Arduino communication
 require('dotenv').config();
 
 const app = express();
 const PORT = 8080;
 
-// Allow specific origins (replace with your frontend URL)
+// CORS configuration
 const allowedOrigins = ['http://localhost:3000', 'https://damon11111.github.io'];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // 如果请求没有来源（如某些服务器请求），允许
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
-      // 允许的来源
       return callback(null, true);
     } else {
-      // 拒绝的来源
       const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
       return callback(new Error(msg), false);
     }
   },
-  methods: ['GET'], // 允许的请求方法
-  credentials: true, // 是否允许携带凭据（如 cookies）
+  methods: ['GET'], // Allowed request methods
+  credentials: true,
 }));
 
+// Arduino serial port configuration
+const arduinoPort = new SerialPort({
+  path: '/dev/cu.usbmodem123456781', // Replace with your Arduino's port path (Windows: COM3, Mac/Linux: /dev/ttyUSB0)
+  baudRate: 115200,      // Match the baud rate with Arduino's Serial.begin
+});
 
-// Route to get weather data
-app.get('/api/weather', async (req, res) => {
-  const { lat, lon } = req.query;
-  const API_KEY = process.env.API_KEY;
+// Set up the parser to handle incoming data
+const parser = arduinoPort.pipe(new ReadlineParser({ delimiter: '\n' }));
 
-  const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=imperial`;
-  const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+// Store Arduino data in memory
+let sensorData = {
+  temperature: null,
+  heartRate: null,
+  uvIndex: null,
+};
 
+// Handle incoming data from Arduino
+parser.on('data', (line) => {
   try {
-    const weatherResponse = await axios.get(weatherUrl);
-    const uvResponse = await axios.get(uvUrl);
+    console.log(`Received from Arduino: ${line}`);
+    const [temperature, heartRate, uvIndex] = line.trim().split(',');
 
-    res.json({
-      temperature: weatherResponse.data.main.temp,
-      weatherIcon: weatherResponse.data.weather[0].icon,
-      uvIndex: uvResponse.data.value,
-    });
+    // Update sensor data
+    sensorData = {
+      temperature: parseFloat(temperature),
+      heartRate: parseInt(heartRate, 10),
+      uvIndex: parseInt(uvIndex, 10),
+    };
   } catch (error) {
-    console.error('Error fetching weather data:', error.message);
-    res.status(500).send({ error: 'Failed to fetch weather data' });
+    console.error('Error parsing Arduino data:', error.message);
+  }
+});
+
+// Route to fetch sensor data
+app.get('/api/weather', (req, res) => {
+  if (sensorData.temperature !== null && sensorData.heartRate !== null && sensorData.uvIndex !== null) {
+    res.json(sensorData);
+  } else {
+    res.status(500).json({ error: 'No data available from Arduino' });
   }
 });
 
