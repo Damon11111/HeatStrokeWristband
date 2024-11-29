@@ -8,11 +8,25 @@ const app = express();
 const PORT = 8080;
 
 // Allow specific origins (replace with your frontend URL)
+const allowedOrigins = ['http://localhost:3000', 'https://damon11111.github.io'];
+
 app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your frontend URL
-  methods: ['GET'], // Allow only GET requests
-  credentials: true, // Include credentials if necessary
+  origin: function (origin, callback) {
+    // 如果请求没有来源（如某些服务器请求），允许
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      // 允许的来源
+      return callback(null, true);
+    } else {
+      // 拒绝的来源
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      return callback(new Error(msg), false);
+    }
+  },
+  methods: ['GET'], // 允许的请求方法
+  credentials: true, // 是否允许携带凭据（如 cookies）
 }));
+
 
 // Route to get weather data
 app.get('/api/weather', async (req, res) => {
