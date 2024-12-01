@@ -60,10 +60,11 @@ const HomePage = () => {
   return (
     <div className="scene">
       {/* Display weather and UV information */}
-      <h1>Weather Information</h1>
-      {temperature !== null && <p>Current Temperature: {temperature}°F</p>}
-      {uvIndex !== null && <p>UV Index: {uvIndex}</p>}
-
+      <div className='currentWheather'>
+        <h1>Weather Information</h1>
+        {temperature !== null && <p>Current Temperature: {temperature}°F</p>}
+        {uvIndex !== null && <p>Current UV Index: {uvIndex}</p>}
+      </div>
       {/* Buttons */}
       <div className="buttons">
         <div

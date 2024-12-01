@@ -81,3 +81,16 @@ h1 {
   background-color: #f0f0f0;
   transform: translateY(-2px);
 }
+
+.currentWheather {
+  position: absolute; /* 使用绝对定位 */
+  top: 20px;          /* 距离顶部 20px */
+  left: 20px;         /* 距离左侧 20px */
+  margin: 0;          /* 清除默认 margin */
+  font-size: 16px;    /* 根据需要调整字体大小 */
+  text-align: left;   /* 文本左对齐 */
+  /* background: rgba(255, 255, 255, 0.7); 可选：添加半透明背景以提升可读性 */
+  padding: 10px;     /*添加内边距使内容更美观*/
+  border-radius: 5px; /* 可选：圆角边框 */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* 可选：添加阴影 */
+}

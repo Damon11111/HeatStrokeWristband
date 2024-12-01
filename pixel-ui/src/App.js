@@ -13,6 +13,7 @@ import SafeTemperature from './components/SafeTemperature';
 import CautionTemperature from './components/CautionTemperature';
 import DangerTemperature from './components/DangerTemperature';
 
+
 const App = () => {
   return (
     <Router>
