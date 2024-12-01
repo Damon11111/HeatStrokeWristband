@@ -5,8 +5,12 @@
   background-size: cover;
   text-align: center;
   font-family: 'Courier New', monospace;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  box-sizing: border-box; /* 确保 padding 不影响整体布局 */
 }
 
 h1 {
@@ -64,6 +68,7 @@ h1 {
   width: 50px;
   height: 50px;
   text-align: center;
+  justify-content: center;
   line-height: 40px;
   box-shadow: 2px 2px 0 black;
   transition: all 0.2s ease;

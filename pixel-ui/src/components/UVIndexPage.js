@@ -21,7 +21,7 @@ const UVIndexPage = () => {
           {isDanger ? 'DANGER' : 'SAFE'}</h3>
           <p>range</p>
           <button className="Uv-info-button" onClick={() => navigate('/info')}>
-            !
+          ℹ
           </button>
         </div>
         <div className="right-panel">

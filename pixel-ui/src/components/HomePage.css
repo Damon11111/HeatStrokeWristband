@@ -10,11 +10,12 @@
   justify-content: center; /* 垂直居中 */
   font-family: 'Tiny5', monospace;
   gap: 20px; /* 增加元素间的间距 */
+  box-sizing: border-box;
 }
 
 /* UV Index 信息 */
 h1 {
-  font-size: 24px;
+  font-size: 36px;
   margin-bottom: 20px;
 }
 
@@ -82,6 +83,7 @@ h1 {
   transform: translateY(-2px);
 }
 
+/* 当前天气信息位置调整 */
 .currentWheather {
   position: absolute; /* 使用绝对定位 */
   top: 20px;          /* 距离顶部 20px */
@@ -89,8 +91,45 @@ h1 {
   margin: 0;          /* 清除默认 margin */
   font-size: 16px;    /* 根据需要调整字体大小 */
   text-align: left;   /* 文本左对齐 */
-  /* background: rgba(255, 255, 255, 0.7); 可选：添加半透明背景以提升可读性 */
-  padding: 10px;     /*添加内边距使内容更美观*/
-  border-radius: 5px; /* 可选：圆角边框 */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* 可选：添加阴影 */
+  background: rgba(255, 255, 255, 0.7); /* 半透明背景 */
+  padding: 10px;      /* 内边距 */
+  border-radius: 5px; /* 圆角边框 */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* 添加阴影 */
+}
+
+/* 媒体查询：适配小屏幕 */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  .buttons {
+    gap: 10px; /* 减少按钮间距 */
+  }
+
+  .button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .currentWheather {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .currentWheather {
+    font-size: 12px;
+    padding: 6px;
+  }
 }
