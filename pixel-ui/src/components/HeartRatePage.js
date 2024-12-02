@@ -1,35 +1,38 @@
+// HeartRatePage.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './HeartRatePage.css';
+
+const ARDUINO_API_URL = 'http://localhost:8081/api/sensors';
 
 const HeartRatePage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // 从主页按钮传递的心率数据
-  const initialHeartRateData = location.state?.heartRateData || [60, 65, 70];
-  const initialHeartRate = initialHeartRateData[initialHeartRateData.length - 1];
-
   const [age, setAge] = useState('');
   const [goalBPM, setGoalBPM] = useState(0); // 目标心率
-  const [heartRateData, setHeartRateData] = useState(initialHeartRateData); // 初始心率数据
-  const [currentHeartRate, setCurrentHeartRate] = useState(initialHeartRate); // 当前心率
+  const [heartRateData, setHeartRateData] = useState([]); // 心率数据数组
+  const [currentHeartRate, setCurrentHeartRate] = useState(null); // 当前心率
 
   useEffect(() => {
-    // 模拟实时心率数据更新
-    const interval = setInterval(() => {
-      if (location.state?.heartRateData) {
-        const newHeartRate =
-          location.state.heartRateData[
-            Math.floor(Math.random() * location.state.heartRateData.length)
-          ];
+    const fetchArduinoData = async () => {
+      try {
+        const response = await axios.get(ARDUINO_API_URL);
+
+        // 更新心率数据
+        const newHeartRate = response.data.heartRate;
         setHeartRateData((prevData) => [...prevData.slice(-9), newHeartRate]);
         setCurrentHeartRate(newHeartRate);
+      } catch (error) {
+        console.error("Error fetching Arduino data:", error);
       }
-    }, 2000);
+    };
 
+    fetchArduinoData();
+
+    // 定时刷新 Arduino 数据
+    const interval = setInterval(fetchArduinoData, 5000); // 每隔 5 秒刷新数据
     return () => clearInterval(interval); // 清除定时器
-  }, [location.state?.heartRateData]);
+  }, []);
 
   const calculateGoalBPM = () => {
     if (age) {
@@ -67,7 +70,7 @@ const HeartRatePage = () => {
         {/* 右侧图表 */}
         <div className="right-panel">
           <div className="chart-header">
-            <h2>{currentHeartRate} BPM</h2>
+            <h2>{currentHeartRate !== null ? `${currentHeartRate} BPM` : '-- BPM'}</h2>
             <span>❤️</span>
           </div>
           <svg width="300" height="150">

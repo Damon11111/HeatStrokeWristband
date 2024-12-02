@@ -4,7 +4,7 @@ import axios from 'axios';
 import './HomePage.css';
 
 const API_URL = 'https://heatstrokewristband.onrender.com/api/weather'; // 后端 API 地址
-const ARDUINO_API_URL = 'https://arduino-backend-url.com/api/sensors'; // Arduino 后端 API 地址
+const ARDUINO_API_URL = 'http://localhost:8081/api/sensors'; // Arduino 后端 API
 const HomePage = () => {
   const navigate = useNavigate();
   const [uvIndex, setUvIndex] = useState(null); // UV Index
@@ -14,8 +14,6 @@ const HomePage = () => {
 
 
   // Arduino 数据
-  const [uvIndexArduino, setUvIndexArduino] = useState(null); // 从 Arduino 获取的 UV Index
-  const [temperatureArduino, setTemperatureArduino] = useState(null); // 从 Arduino 获取的 Temperature
   const [heartRate, setHeartRate] = useState(null); // 从 Arduino 获取的 Heart Rate
 
 
@@ -71,9 +69,8 @@ const HomePage = () => {
         const response = await axios.get(ARDUINO_API_URL);
 
         // 更新 Arduino 数据
-        setTemperatureArduino(response.data.temperature);
-        setUvIndexArduino(response.data.uvIndex);
         setHeartRate(response.data.heartRate);
+        
       } catch (error) {
         console.error("Error fetching Arduino data:", error);
       }
@@ -100,10 +97,7 @@ const HomePage = () => {
       {/* 显示 Arduino 数据 */}
       <div className="ArduinoWheather">
         <h1>Arduino Data</h1>
-        {temperatureArduino !== null && (
-          <p>Arduino Temperature: {temperatureArduino}°F</p>
-        )}
-        {uvIndexArduino !== null && <p>Arduino UV Index: {uvIndexArduino}</p>}
+       
         {heartRate !== null && <p>Heart Rate: {heartRate} bpm</p>}
       </div>
 
