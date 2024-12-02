@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './HeartRatePage.css';
 
 const HeartRatePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // 从主页按钮传递的心率数据
+  const initialHeartRateData = location.state?.heartRateData || [60, 65, 70];
+  const initialHeartRate = initialHeartRateData[initialHeartRateData.length - 1];
+
   const [age, setAge] = useState('');
   const [goalBPM, setGoalBPM] = useState(0); // 目标心率
-  const [heartRateData, setHeartRateData] = useState([60, 65, 70]); // 初始心率数据
-  const [currentHeartRate, setCurrentHeartRate] = useState(60); // 当前心率
+  const [heartRateData, setHeartRateData] = useState(initialHeartRateData); // 初始心率数据
+  const [currentHeartRate, setCurrentHeartRate] = useState(initialHeartRate); // 当前心率
 
   useEffect(() => {
-    // 实时更新心率数据
+    // 模拟实时心率数据更新
     const interval = setInterval(() => {
-      const newRate = Math.floor(Math.random() * 40) + 60; // 随机心率范围 60-100
-      setHeartRateData((prevData) => [...prevData.slice(-9), newRate]); // 只保留最近10个数据
-      setCurrentHeartRate(newRate);
+      if (location.state?.heartRateData) {
+        const newHeartRate =
+          location.state.heartRateData[
+            Math.floor(Math.random() * location.state.heartRateData.length)
+          ];
+        setHeartRateData((prevData) => [...prevData.slice(-9), newHeartRate]);
+        setCurrentHeartRate(newHeartRate);
+      }
     }, 2000);
 
     return () => clearInterval(interval); // 清除定时器
-  }, []);
+  }, [location.state?.heartRateData]);
 
   const calculateGoalBPM = () => {
     if (age) {
