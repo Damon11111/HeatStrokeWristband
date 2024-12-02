@@ -96,7 +96,7 @@ const HomePage = () => {
 
       {/* 显示 Arduino 数据 */}
       <div className="ArduinoWheather">
-        <h1>Arduino Data</h1>
+        
        
         {heartRate !== null && <p>Heart Rate: {heartRate} bpm</p>}
       </div>
